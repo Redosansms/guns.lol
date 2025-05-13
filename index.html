@@ -155,14 +155,14 @@
 
   <!-- Vidéo de fond -->
   <video class="bg-video" autoplay muted loop playsinline>
-    <source src="imlage/bg.mp4" type="video/mp4">
+    <source src="bg.mp4" type="video/mp4">
     Votre navigateur ne supporte pas la vidéo de fond.
   </video>
 
   <!-- Contenu principal -->
   <div id="main-content" style="display:none;">
     <div class="card-container" id="card">
-      <img src="imlage/pp.jpeg" alt="Profile" class="profile-rectangle">
+      <img src="pp.jpeg" alt="Profile" class="profile-rectangle">
       <div class="text-content">
         <div class="username">Redhos</div>
         <a href="https://redosansms.github.io/Redhosgames/" class="link-button">Mon site</a>
@@ -175,7 +175,7 @@
 
   <!-- Audio -->
   <audio id="bg-audio" loop>
-    <source src="imlage/son.mp3" type="audio/mpeg">
+    <source src="son.mp3" type="audio/mpeg">
     Votre navigateur ne supporte pas l'audio.
   </audio>
 
@@ -209,7 +209,7 @@
       card.style.boxShadow = `0 8px 32px rgba(0, 0, 0, 0.4)`;
     });
 
-    // Stockage local pour simuler le compteur de vues
+    // Compteur de vues
     const viewKey = "redhos-views";
     let views = localStorage.getItem(viewKey);
     if (!views) {
