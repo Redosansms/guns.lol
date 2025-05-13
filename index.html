@@ -17,6 +17,7 @@
       height: 100%;
       overflow: hidden;
       background: #000;
+      perspective: 1000px;
     }
 
     #welcome-screen {
@@ -69,12 +70,11 @@
       background: rgba(255, 255, 255, 0.1);
       border-radius: 20px;
       backdrop-filter: blur(10px);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 30px;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      transition: transform 0.4s cubic-bezier(0.17, 0.67, 0.21, 0.99);
       transform-style: preserve-3d;
       will-change: transform;
       position: relative;
@@ -89,6 +89,7 @@
       border: 2px solid white;
       margin-right: 20px;
       margin-top: -30px;
+      transition: transform 0.4s;
     }
 
     .text-content {
@@ -96,6 +97,7 @@
       flex-direction: column;
       justify-content: center;
       align-items: flex-start;
+      transition: transform 0.4s;
     }
 
     .username-container {
@@ -116,9 +118,9 @@
       animation: galaxyEffect 4s ease-in-out infinite;
       position: relative;
       z-index: 1;
+      transition: transform 0.3s;
     }
 
-    /* Effet lucioles */
     .firefly {
       position: absolute;
       width: 4px;
@@ -158,7 +160,6 @@
       }
     }
 
-    /* Animation effet galaxie */
     @keyframes galaxyEffect {
       0% { background-position: 0% 50%; opacity: 0.7; }
       50% { background-position: 100% 50%; opacity: 1; }
@@ -166,9 +167,7 @@
     }
 
     .username:hover {
-      text-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 0 0 20px rgba(255, 255, 255, 0.6);
-      transform: scale(1.1);
-      transition: transform 0.3s ease, text-shadow 0.3s ease;
+      transform: scale(1.05);
     }
 
     .link-button {
@@ -186,7 +185,7 @@
     }
 
     .link-button:hover {
-      background: rgba(255, 255, 255, 0.4);
+      background: rgba(255, 255, 255, 0.3);
       transform: translateY(-2px);
     }
 
@@ -214,8 +213,8 @@
     }
 
     .editing-button:hover {
-      transform: translateY(-5px);
-      background: rgba(255, 255, 255, 0.4);
+      transform: translateY(-3px);
+      background: rgba(255, 255, 255, 0.3);
     }
 
     .editing-button img {
@@ -250,19 +249,67 @@
       font-size: 16px;
       text-align: center;
       font-weight: bold;
+      overflow: hidden;
+      border-right: 2px solid white;
+      white-space: nowrap;
+      letter-spacing: 1px;
     }
 
-    /* Effet 3D uniquement quand la souris est dessus */
-    .card-container:hover {
-      transform: rotateX(10deg) rotateY(10deg);
-      box-shadow: 0 15px 40px rgba(255, 255, 255, 0.2);
+    .volume-control {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 8px 12px;
+      border-radius: 30px;
+      backdrop-filter: blur(5px);
+    }
+
+    .volume-control input[type="range"] {
+      width: 80px;
+      margin: 0 8px;
+      -webkit-appearance: none;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 5px;
+      outline: none;
+    }
+
+    .volume-control input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: white;
+      cursor: pointer;
+    }
+
+    .volume-icon {
+      width: 16px;
+      height: 16px;
+      filter: invert(1);
+    }
+
+    .mouse-trail {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      mix-blend-mode: screen;
     }
   </style>
 </head>
 <body>
 
   <!-- Écran d'accueil -->
-  <div id="welcome-screen">Click pour rentrer</div>
+  <div id="welcome-screen">Click bro</div>
 
   <!-- Vidéo de fond -->
   <video class="bg-video" autoplay muted loop playsinline>
@@ -277,27 +324,31 @@
       <div class="text-content">
         <div class="username-container">
           <div class="username">redhos</div>
-          <!-- Lucioles statiques -->
           <div class="firefly" style="top: -15px; left: 10px; animation-delay: 0s;"></div>
           <div class="firefly" style="top: -5px; left: -10px; animation-delay: 1s;"></div>
           <div class="firefly" style="top: 5px; left: 15px; animation-delay: 2s;"></div>
           <div class="firefly" style="top: 15px; left: -5px; animation-delay: 3s;"></div>
           <div class="firefly" style="top: -10px; right: 10px; animation-delay: 4s;"></div>
         </div>
-        <a href="https://redosansms.github.io/Redhosgames/" class="link-button">Mon site</a>
-        <a href="https://github.com/Redosansms" class="link-button">Mon GitHub</a>
+        <a href="https://redosansms.github.io/Redhosgames/" class="link-button">My website</a>
+        <a href="https://github.com/Redosansms" class="link-button">My GitHub</a>
         
-        <!-- Rectangle avec le logo HTML -->
         <a href="https://github.com/Redosansms" class="editing-button">
           <img src="html-logo.png" alt="HTML Logo" />editing index.html
         </a>
         
         <div class="view-counter" id="view-count">
-          <img src="eye-logo.png" alt="Vue" class="eye-icon"> 543 vues
+          <img src="eye-logo.png" alt="Vue" class="eye-icon"> 11 345 vues
         </div>
       </div>
     </div>
-    <div class="description">𝐆𝐨 𝐭𝐨 𝐦𝐲 𝐠𝐢𝐭𝐡𝐮𝐛 𝐦𝐩 𝐨𝐩𝐞𝐧</div>
+    <div class="description" id="typewriter-text"></div>
+  </div>
+
+  <!-- Barre de volume -->
+  <div class="volume-control">
+    <img src="https://cdn-icons-png.flaticon.com/512/3161/3161837.png" alt="Volume" class="volume-icon">
+    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1">
   </div>
 
   <!-- Audio -->
@@ -334,19 +385,52 @@
     createSnowflakes(80);
 
     const card = document.getElementById('card');
-    document.addEventListener('mousemove', (e) => {
-      const { left, top, width, height } = card.getBoundingClientRect();
-      const x = e.clientX - left - width / 2;
-      const y = e.clientY - top - height / 2;
-      const rotateX = (-y / 20).toFixed(2);
-      const rotateY = (x / 20).toFixed(2);
-      card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-      card.style.boxShadow = `${-rotateY * 2}px ${rotateX * 2}px 30px rgba(255, 255, 255, 0.2)`;
+    const profileImg = document.querySelector('.profile-rectangle');
+    const textContent = document.querySelector('.text-content');
+    
+    let isHovering = false;
+    const maxTilt = 15; // Degrés maximum d'inclinaison
+    const maxDepth = 30; // Pixels maximum de profondeur
+
+    card.addEventListener('mouseenter', () => {
+      isHovering = true;
     });
 
-    document.addEventListener('mouseleave', () => {
-      card.style.transform = `rotateX(0deg) rotateY(0deg)`;
-      card.style.boxShadow = `0 8px 32px rgba(0, 0, 0, 0.4)`;
+    card.addEventListener('mouseleave', () => {
+      isHovering = false;
+      card.style.transform = 'translateZ(0) rotateX(0) rotateY(0)';
+      profileImg.style.transform = 'translateZ(0)';
+      textContent.style.transform = 'translateZ(0)';
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      if (!isHovering) return;
+      
+      const { left, top, width, height } = card.getBoundingClientRect();
+      const centerX = left + width / 2;
+      const centerY = top + height / 2;
+      
+      // Calcul de la position relative de la souris (-1 à 1)
+      const mouseX = (e.clientX - centerX) / (width / 2);
+      const mouseY = (e.clientY - centerY) / (height / 2);
+      
+      // Calcul des rotations
+      const rotateY = mouseX * maxTilt;
+      const rotateX = -mouseY * maxTilt;
+      
+      // Calcul de la profondeur (effet "avance vers la souris")
+      const depth = Math.abs(mouseX) * maxDepth;
+      
+      // Application des transformations
+      card.style.transform = `
+        translateZ(${depth}px)
+        rotateX(${rotateX}deg)
+        rotateY(${rotateY}deg)
+      `;
+      
+      // Effet de parallaxe sur les éléments internes
+      profileImg.style.transform = `translateZ(${depth * 0.5}px)`;
+      textContent.style.transform = `translateZ(${depth * 0.3}px)`;
     });
 
     // Compteur de vues
@@ -360,15 +444,94 @@
     localStorage.setItem(viewKey, views);
     document.getElementById('view-count').innerHTML = `<img src="eye-logo.png" alt="Vue" class="eye-icon"> ${views} vues`;
 
+    // Contrôle du volume
+    const audio = document.getElementById('bg-audio');
+    const volumeSlider = document.getElementById('volume-slider');
+    
+    volumeSlider.addEventListener('input', (e) => {
+      audio.volume = e.target.value;
+    });
+
+    // Effet de traînée de souris
+    const trailElements = [];
+    const trailCount = 10;
+    
+    for (let i = 0; i < trailCount; i++) {
+      const trail = document.createElement('div');
+      trail.className = 'mouse-trail';
+      trail.style.opacity = 1 - (i / trailCount);
+      trail.style.width = `${20 - i}px`;
+      trail.style.height = `${20 - i}px`;
+      document.body.appendChild(trail);
+      trailElements.push(trail);
+    }
+    
+    let mouseX = 0;
+    let mouseY = 0;
+    let trailX = Array(trailCount).fill(0);
+    let trailY = Array(trailCount).fill(0);
+    
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+    
+    function updateTrail() {
+      for (let i = trailCount - 1; i > 0; i--) {
+        trailX[i] = trailX[i - 1];
+        trailY[i] = trailY[i - 1];
+      }
+      trailX[0] = mouseX;
+      trailY[0] = mouseY;
+      
+      for (let i = 0; i < trailCount; i++) {
+        trailElements[i].style.left = `${trailX[i]}px`;
+        trailElements[i].style.top = `${trailY[i]}px`;
+      }
+      
+      requestAnimationFrame(updateTrail);
+    }
+    
+    updateTrail();
+
+    // Effet typewriter infini
+    const text = "𝐆𝐨 𝐭𝐨 𝐦𝐲 𝐠𝐢𝐭𝐡𝐮𝐛 𝐦𝐩 𝐨𝐩𝐞𝐧";
+    let i = 0;
+    let isDeleting = false;
+    let speed = 100;
+    
+    function typeWriter() {
+      const typewriterElement = document.getElementById("typewriter-text");
+      
+      if (isDeleting) {
+        typewriterElement.innerHTML = text.substring(0, i-1);
+        i--;
+        speed = 50;
+      } else {
+        typewriterElement.innerHTML = text.substring(0, i+1);
+        i++;
+        speed = 100;
+      }
+      
+      if (!isDeleting && i === text.length) {
+        isDeleting = true;
+        speed = 1500;
+      } else if (isDeleting && i === 0) {
+        isDeleting = false;
+        speed = 500;
+      }
+      
+      setTimeout(typeWriter, speed);
+    }
+
     document.getElementById('welcome-screen').addEventListener('click', () => {
       document.getElementById('welcome-screen').style.display = 'none';
       document.getElementById('main-content').style.display = 'flex';
 
-      // Créer des lucioles supplémentaires après le chargement
       setTimeout(createFireflies, 1000);
+      setTimeout(typeWriter, 500);
 
-      const audio = document.getElementById('bg-audio');
-      audio.volume = 1;
+      audio.volume = volumeSlider.value;
       audio.play().catch((err) => {
         console.log('Lecture audio bloquée :', err);
       });
