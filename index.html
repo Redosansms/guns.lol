@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Redhos | Link-in-Bio</title>
+  <title>Redhos | Editing index.html</title>
   <style>
     * {
       margin: 0;
@@ -64,7 +64,7 @@
 
     .card-container {
       width: 600px;
-      height: 300px;
+      height: 350px;
       background: rgba(255, 255, 255, 0.1);
       border-radius: 20px;
       backdrop-filter: blur(10px);
@@ -86,7 +86,8 @@
       border-radius: 50%;
       object-fit: cover;
       border: 2px solid white;
-      margin-right: 30px;
+      margin-right: 20px;
+      margin-top: -30px;
     }
 
     .text-content {
@@ -121,6 +122,40 @@
       transform: translateY(-2px);
     }
 
+    .eye-icon {
+      width: 25px;
+      height: 25px;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+
+    .editing-button {
+      width: 250px;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      text-decoration: none;
+      border-radius: 20px;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      transition: transform 0.3s;
+    }
+
+    .editing-button:hover {
+      transform: translateY(-5px);
+      background: rgba(255, 255, 255, 0.4);
+    }
+
+    .editing-button img {
+      width: 25px;
+      height: 25px;
+      margin-right: 10px;
+    }
+
     #main-content {
       display: flex;
       flex-direction: column;
@@ -137,6 +172,8 @@
       position: relative;
       top: 15px;
       left: -240px;
+      display: flex;
+      align-items: center;
     }
 
     .description {
@@ -145,6 +182,12 @@
       font-size: 16px;
       text-align: center;
       font-weight: bold;
+    }
+
+    /* Effet 3D uniquement quand la souris est dessus */
+    .card-container:hover {
+      transform: rotateX(10deg) rotateY(10deg);
+      box-shadow: 0 15px 40px rgba(255, 255, 255, 0.2);
     }
   </style>
 </head>
@@ -167,7 +210,15 @@
         <div class="username">Redhos</div>
         <a href="https://redosansms.github.io/Redhosgames/" class="link-button">Mon site</a>
         <a href="https://github.com/Redosansms" class="link-button">Mon GitHub</a>
-        <div class="view-counter" id="view-count">👁️ 543 vues</div>
+        
+        <!-- Rectangle avec le logo HTML -->
+        <a href="https://github.com/Redosansms" class="editing-button">
+          <img src="html-logo.png" alt="HTML Logo" />Editing index.html
+        </a>
+        
+        <div class="view-counter" id="view-count">
+          <img src="eye-logo.png" alt="Vue" class="eye-icon"> 543 vues
+        </div>
       </div>
     </div>
     <div class="description">𝐆𝐨 𝐭𝐨 𝐦𝐲 𝐠𝐢𝐭𝐡𝐮𝐛 𝐦𝐩 𝐨𝐩𝐞𝐧</div>
@@ -218,7 +269,7 @@
       views = parseInt(views) + 1;
     }
     localStorage.setItem(viewKey, views);
-    document.getElementById('view-count').textContent = `👁️ ${views} vues`;
+    document.getElementById('view-count').innerHTML = `<img src="eye-logo.png" alt="Vue" class="eye-icon"> ${views} vues`;
 
     document.getElementById('welcome-screen').addEventListener('click', () => {
       document.getElementById('welcome-screen').style.display = 'none';
