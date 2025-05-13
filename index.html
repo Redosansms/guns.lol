@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Redhos | Link-in-Bio</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    #welcome-screen {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: black;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      font-size: 2rem;
+      cursor: pointer;
+    }
+
+    video.bg-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: 0;
+    }
+
+    .snowflake {
+      position: absolute;
+      top: -10px;
+      width: 3px;
+      height: 3px;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.8;
+      animation: fall linear infinite;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(0); opacity: 0; }
+      10% { opacity: 1; }
+      100% { transform: translateY(100vh); opacity: 0; }
+    }
+
+    .card-container {
+      width: 600px;
+      height: 300px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      transform-style: preserve-3d;
+      will-change: transform;
+      position: relative;
+      z-index: 3;
+    }
+
+    .profile-rectangle {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid white;
+      margin-right: 30px;
+    }
+
+    .text-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .username {
+      font-size: 34px;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    .link-button {
+      display: inline-block;
+      padding: 12px 24px;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      text-decoration: none;
+      border-radius: 30px;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .link-button:hover {
+      background: rgba(255, 255, 255, 0.4);
+      transform: translateY(-2px);
+    }
+
+    #main-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      position: relative;
+      z-index: 1;
+    }
+
+    .view-counter {
+      color: white;
+      font-size: 14px;
+      position: relative;
+      top: 15px;
+      left: -240px;
+    }
+
+    .description {
+      color: white;
+      margin-top: 20px;
+      font-size: 16px;
+      text-align: center;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Écran d'accueil -->
+  <div id="welcome-screen">Click pour rentrer</div>
+
+  <!-- Vidéo de fond -->
+  <video class="bg-video" autoplay muted loop playsinline>
+    <source src="imlage/bg.mp4" type="video/mp4">
+    Votre navigateur ne supporte pas la vidéo de fond.
+  </video>
+
+  <!-- Contenu principal -->
+  <div id="main-content" style="display:none;">
+    <div class="card-container" id="card">
+      <img src="imlage/pp.jpeg" alt="Profile" class="profile-rectangle">
+      <div class="text-content">
+        <div class="username">Redhos</div>
+        <a href="https://redosansms.github.io/Redhosgames/" class="link-button">Mon site</a>
+        <a href="https://github.com/Redosansms" class="link-button">Mon GitHub</a>
+        <div class="view-counter" id="view-count">👁️ 543 vues</div>
+      </div>
+    </div>
+    <div class="description">𝐆𝐨 𝐭𝐨 𝐦𝐲 𝐠𝐢𝐭𝐡𝐮𝐛 𝐦𝐩 𝐨𝐩𝐞𝐧</div>
+  </div>
+
+  <!-- Audio -->
+  <audio id="bg-audio" loop>
+    <source src="imlage/son.mp3" type="audio/mpeg">
+    Votre navigateur ne supporte pas l'audio.
+  </audio>
+
+  <script>
+    function createSnowflakes(count) {
+      for (let i = 0; i < count; i++) {
+        const flake = document.createElement('div');
+        flake.classList.add('snowflake');
+        flake.style.left = `${Math.random() * 100}vw`;
+        flake.style.animationDuration = `${Math.random() * 5 + 3}s`;
+        flake.style.animationDelay = `${Math.random() * 5}s`;
+        document.body.appendChild(flake);
+      }
+    }
+
+    createSnowflakes(80);
+
+    const card = document.getElementById('card');
+    document.addEventListener('mousemove', (e) => {
+      const { left, top, width, height } = card.getBoundingClientRect();
+      const x = e.clientX - left - width / 2;
+      const y = e.clientY - top - height / 2;
+      const rotateX = (-y / 20).toFixed(2);
+      const rotateY = (x / 20).toFixed(2);
+      card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      card.style.boxShadow = `${-rotateY * 2}px ${rotateX * 2}px 30px rgba(255, 255, 255, 0.2)`;
+    });
+
+    document.addEventListener('mouseleave', () => {
+      card.style.transform = `rotateX(0deg) rotateY(0deg)`;
+      card.style.boxShadow = `0 8px 32px rgba(0, 0, 0, 0.4)`;
+    });
+
+    // Stockage local pour simuler le compteur de vues
+    const viewKey = "redhos-views";
+    let views = localStorage.getItem(viewKey);
+    if (!views) {
+      views = 543;
+    } else {
+      views = parseInt(views) + 1;
+    }
+    localStorage.setItem(viewKey, views);
+    document.getElementById('view-count').textContent = `👁️ ${views} vues`;
+
+    document.getElementById('welcome-screen').addEventListener('click', () => {
+      document.getElementById('welcome-screen').style.display = 'none';
+      document.getElementById('main-content').style.display = 'flex';
+
+      const audio = document.getElementById('bg-audio');
+      audio.volume = 1;
+      audio.play().catch((err) => {
+        console.log('Lecture audio bloquée :', err);
+      });
+    });
+  </script>
+</body>
+</html>
