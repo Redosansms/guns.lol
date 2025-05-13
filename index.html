@@ -16,6 +16,7 @@
       width: 100%;
       height: 100%;
       overflow: hidden;
+      background: #000;
     }
 
     #welcome-screen {
@@ -97,10 +98,77 @@
       align-items: flex-start;
     }
 
+    .username-container {
+      position: relative;
+      display: inline-block;
+    }
+
     .username {
       font-size: 34px;
       font-weight: bold;
       margin-bottom: 15px;
+      text-transform: lowercase;
+      letter-spacing: 2px;
+      color: white;
+      background: linear-gradient(45deg, #ff00ff, #00ffff);
+      background-clip: text;
+      -webkit-background-clip: text;
+      animation: galaxyEffect 4s ease-in-out infinite;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Effet lucioles */
+    .firefly {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background-color: #fff;
+      border-radius: 50%;
+      filter: blur(1px);
+      opacity: 0;
+      animation: floatAround 5s infinite ease-in-out;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes floatAround {
+      0% {
+        transform: translate(0, 0);
+        opacity: 0;
+        box-shadow: 0 0 5px 2px rgba(255, 255, 255, 0.5);
+      }
+      20% {
+        opacity: 0.8;
+        box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.8);
+      }
+      50% {
+        transform: translate(10px, -10px);
+        opacity: 1;
+        box-shadow: 0 0 15px 8px rgba(255, 255, 255, 1);
+      }
+      80% {
+        opacity: 0.5;
+        box-shadow: 0 0 5px 2px rgba(255, 255, 255, 0.5);
+      }
+      100% {
+        transform: translate(0, 0);
+        opacity: 0;
+        box-shadow: 0 0 5px 2px rgba(255, 255, 255, 0.2);
+      }
+    }
+
+    /* Animation effet galaxie */
+    @keyframes galaxyEffect {
+      0% { background-position: 0% 50%; opacity: 0.7; }
+      50% { background-position: 100% 50%; opacity: 1; }
+      100% { background-position: 0% 50%; opacity: 0.7; }
+    }
+
+    .username:hover {
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 0 0 20px rgba(255, 255, 255, 0.6);
+      transform: scale(1.1);
+      transition: transform 0.3s ease, text-shadow 0.3s ease;
     }
 
     .link-button {
@@ -207,13 +275,21 @@
     <div class="card-container" id="card">
       <img src="pp.jpeg" alt="Profile" class="profile-rectangle">
       <div class="text-content">
-        <div class="username">Redhos</div>
+        <div class="username-container">
+          <div class="username">redhos</div>
+          <!-- Lucioles statiques -->
+          <div class="firefly" style="top: -15px; left: 10px; animation-delay: 0s;"></div>
+          <div class="firefly" style="top: -5px; left: -10px; animation-delay: 1s;"></div>
+          <div class="firefly" style="top: 5px; left: 15px; animation-delay: 2s;"></div>
+          <div class="firefly" style="top: 15px; left: -5px; animation-delay: 3s;"></div>
+          <div class="firefly" style="top: -10px; right: 10px; animation-delay: 4s;"></div>
+        </div>
         <a href="https://redosansms.github.io/Redhosgames/" class="link-button">Mon site</a>
         <a href="https://github.com/Redosansms" class="link-button">Mon GitHub</a>
         
         <!-- Rectangle avec le logo HTML -->
         <a href="https://github.com/Redosansms" class="editing-button">
-          <img src="html-logo.png" alt="HTML Logo" />Editing index.html
+          <img src="html-logo.png" alt="HTML Logo" />editing index.html
         </a>
         
         <div class="view-counter" id="view-count">
@@ -239,6 +315,19 @@
         flake.style.animationDuration = `${Math.random() * 5 + 3}s`;
         flake.style.animationDelay = `${Math.random() * 5}s`;
         document.body.appendChild(flake);
+      }
+    }
+
+    function createFireflies() {
+      const container = document.querySelector('.username-container');
+      for (let i = 0; i < 5; i++) {
+        const firefly = document.createElement('div');
+        firefly.classList.add('firefly');
+        firefly.style.left = `${Math.random() * 100 - 20}px`;
+        firefly.style.top = `${Math.random() * 60 - 30}px`;
+        firefly.style.animationDelay = `${Math.random() * 5}s`;
+        firefly.style.animationDuration = `${Math.random() * 3 + 3}s`;
+        container.appendChild(firefly);
       }
     }
 
@@ -274,6 +363,9 @@
     document.getElementById('welcome-screen').addEventListener('click', () => {
       document.getElementById('welcome-screen').style.display = 'none';
       document.getElementById('main-content').style.display = 'flex';
+
+      // Créer des lucioles supplémentaires après le chargement
+      setTimeout(createFireflies, 1000);
 
       const audio = document.getElementById('bg-audio');
       audio.volume = 1;
